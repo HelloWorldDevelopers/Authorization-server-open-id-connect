@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: calc(100% - 100px); /* Adjust width to account for the button */
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .button-container {
+            display: flex;
+            align-items: center;
+        }
+        .generate-button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .generate-button:hover {
+            background-color: #0056b3;
+        }
+        button[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Client</h2>
+        <form th:action="@{/clients/add}" method="post" th:object="${clientForm}">
+            <label for="clientName">Client Name</label>
+            <input type="text" id="clientName" name="clientName" th:field="*{clientName}" required>
+
+            <label for="clientSecret">Client Secret</label>
+            <div class="button-container">
+                <input type="text" id="clientSecret" name="clientSecret" th:field="*{clientSecret}" required>
+                <button type="button" class="generate-button" onclick="generateClientSecret()">Generate</button>
+            </div>
+
+            <label for="redirectUri">Redirect URI</label>
+            <input type="text" id="redirectUri" name="redirectUri" th:field="*{redirectUri}" required>
+
+            <button type="submit">Add Client</button>
+        </form>
+    </div>
+
+    <script>
+        function generateClientSecret() {
+            // Generate a random 16-character string
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let secret = '';
+            for (let i = 0; i < 16; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                secret += chars[randomIndex];
+            }
+            // Set the generated secret in the input field
+            document.getElementById('clientSecret').value = secret;
+        }
+    </script>
+</body>
+</html>
